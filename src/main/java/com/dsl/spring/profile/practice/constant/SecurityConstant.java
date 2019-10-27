@@ -7,7 +7,7 @@ package com.dsl.spring.profile.practice.constant;
 
 public interface SecurityConstant
 {
-    String AUTHORIZATION = "Authorization";
+    String AUTHORIZATION_HEADER = "Authorization";
     String BEARER = "Bearer ";
     String SECRET_KEY = "secret123";
     String SCOPE = "scope";
