@@ -5,6 +5,8 @@
 
 package com.dsl.spring.profile.practice.config;
 
+import com.dsl.spring.profile.practice.security.JwtAuthenticationEntryPoint;
+import com.dsl.spring.profile.practice.security.JwtAuthenticationFilter;
 import com.dsl.spring.profile.practice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,14 +20,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebConfig extends WebSecurityConfigurerAdapter
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     @Override
@@ -50,7 +59,11 @@ public class WebConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         http.csrf().disable();
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers("/api/users", "/api/token/generate").permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
+        http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
