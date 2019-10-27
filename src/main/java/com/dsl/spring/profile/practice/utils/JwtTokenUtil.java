@@ -8,14 +8,12 @@ package com.dsl.spring.profile.practice.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.dsl.spring.profile.practice.constant.SecurityConstant.*;
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
@@ -46,15 +44,9 @@ public class JwtTokenUtil
 
     public String generateToken(Authentication authentication)
     {
-        String authorities = authentication.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
         return Jwts
                 .builder()
                 .setSubject(authentication.getName())
-                .claim(SCOPE, authorities)
                 .signWith(HS512, SECRET_KEY)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
