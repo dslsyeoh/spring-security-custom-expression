@@ -14,7 +14,7 @@ public interface UserService extends UserDetailsService
 {
     List<User> list();
 
-    String search(Long id);
+    User search(Long id);
 
     String create(User user);
 }
