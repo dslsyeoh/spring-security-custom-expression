@@ -1,1 +1,1 @@
-Practice exercise for custom security expression
+Practice exercise for spring security with custom security expression
