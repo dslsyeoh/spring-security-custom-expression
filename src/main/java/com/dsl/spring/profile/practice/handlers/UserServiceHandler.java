@@ -54,8 +54,10 @@ public class UserServiceHandler implements UserService
         entity.setUsername(user.getUsername());
         entity.setPassword(passwordEncoder.encode(user.getPassword()));
         entity.setRoles(roleEntities);
-        userRepository.save(entity);
-        return fromEntity(entity);
+
+        UserEntity created  = userRepository.save(entity);
+
+        return fromEntity(created);
     }
 
     @Override
