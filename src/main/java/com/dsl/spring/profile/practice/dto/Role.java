@@ -10,7 +10,6 @@ import lombok.Data;
 @Data
 public class Role
 {
-    private Long userId;
     private String userRole;
     private String description;
 }
