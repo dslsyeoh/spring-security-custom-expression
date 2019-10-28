@@ -9,5 +9,5 @@ import com.dsl.spring.profile.practice.dto.Role;
 
 public interface RoleService
 {
-    String create(Role role);
+    Role create(Role role);
 }
