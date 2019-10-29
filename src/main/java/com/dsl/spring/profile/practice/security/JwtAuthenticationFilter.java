@@ -5,7 +5,6 @@
 
 package com.dsl.spring.profile.practice.security;
 
-import com.dsl.spring.profile.practice.constant.SecurityConstant;
 import com.dsl.spring.profile.practice.service.UserService;
 import com.dsl.spring.profile.practice.utils.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
