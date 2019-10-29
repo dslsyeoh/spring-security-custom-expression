@@ -5,6 +5,7 @@
 
 package com.dsl.spring.profile.practice.security;
 
+import com.dsl.spring.profile.practice.domain.RoleEntity;
 import com.dsl.spring.profile.practice.domain.UserEntity;
 import com.dsl.spring.profile.practice.dto.MyUserDetails;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
@@ -31,14 +32,12 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     }
 
     @Override
-    public Object getFilterObject()
-    {
+    public Object getFilterObject() {
         return filterObject;
     }
 
     @Override
-    public void setReturnObject(Object returnObject)
-    {
+    public void setReturnObject(Object returnObject) {
         this.returnObject = returnObject;
     }
 
@@ -48,8 +47,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     }
 
     @Override
-    public Object getThis()
-    {
+    public Object getThis() {
         return target;
     }
 
@@ -61,6 +59,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
     public boolean isAdmin()
     {
         UserEntity userEntity = ((MyUserDetails) this.getPrincipal()).getUserEntity();
-        return userEntity.getRoles().stream().anyMatch(roleEntity -> Objects.equals(roleEntity.getRole(), "ADMIN"));
+        return userEntity.getRoles().stream().map(RoleEntity::getRole).anyMatch(role -> Objects.equals(role, "ADMIN"));
     }
+
 }

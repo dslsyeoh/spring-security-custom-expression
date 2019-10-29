@@ -26,7 +26,7 @@ public class UserController
         return userService.list();
     }
 
-    @PostAuthorize("hasPermission(returnObject, 'ADMIN')")
+    @PostAuthorize("isAdmin()")
     @GetMapping("/{id}")
     @ResponseBody
     public User search(@PathVariable Long id)

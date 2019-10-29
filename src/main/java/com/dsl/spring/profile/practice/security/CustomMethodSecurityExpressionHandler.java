@@ -13,16 +13,14 @@ import org.springframework.security.core.Authentication;
 
 public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler
 {
-    private AuthenticationTrustResolverImpl trustResolver = new AuthenticationTrustResolverImpl();
-
     @Override
     protected MethodSecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication, MethodInvocation invocation)
     {
-        CustomMethodSecurityExpressionRoot customMethodSecurityExpressionRoot = new CustomMethodSecurityExpressionRoot(authentication);
-        customMethodSecurityExpressionRoot.setRoleHierarchy(getRoleHierarchy());
-        customMethodSecurityExpressionRoot.setPermissionEvaluator(getPermissionEvaluator());
-        customMethodSecurityExpressionRoot.setTrustResolver(trustResolver);
-        customMethodSecurityExpressionRoot.setThis(invocation.getThis());
-        return customMethodSecurityExpressionRoot;
+        CustomMethodSecurityExpressionRoot root = new CustomMethodSecurityExpressionRoot(authentication);
+        root.setPermissionEvaluator(new CustomPermissionEvaluator());
+        root.setTrustResolver(new AuthenticationTrustResolverImpl());
+        root.setRoleHierarchy(getRoleHierarchy());
+        root.setThis(invocation.getThis());
+        return root;
     }
 }
