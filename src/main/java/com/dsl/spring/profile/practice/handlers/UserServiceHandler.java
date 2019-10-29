@@ -7,6 +7,7 @@ package com.dsl.spring.profile.practice.handlers;
 
 import com.dsl.spring.profile.practice.domain.RoleEntity;
 import com.dsl.spring.profile.practice.domain.UserEntity;
+import com.dsl.spring.profile.practice.dto.MyUserDetails;
 import com.dsl.spring.profile.practice.dto.User;
 import com.dsl.spring.profile.practice.repository.RoleRepository;
 import com.dsl.spring.profile.practice.repository.UserRepository;
@@ -17,7 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -68,7 +68,7 @@ public class UserServiceHandler implements UserService
         {
             throw new UsernameNotFoundException("username not found");
         }
-        return new org.springframework.security.core.userdetails.User(entity.getUsername(), entity.getPassword(), Collections.emptyList());
+        return new MyUserDetails(entity);
     }
 
     private User fromEntity(UserEntity userEntity)
