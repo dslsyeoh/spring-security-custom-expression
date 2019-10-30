@@ -8,9 +8,10 @@ package com.dsl.spring.profile.practice.dto;
 import lombok.Data;
 
 @Data
-public class Storage
+public class Stock
 {
     private Long id;
     private String name;
     private int quantity;
+    private String description;
 }

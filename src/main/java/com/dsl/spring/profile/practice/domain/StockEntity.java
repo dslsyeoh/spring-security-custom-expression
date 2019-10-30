@@ -11,8 +11,8 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "storage")
-public class StorageEntity
+@Table(name = "stock")
+public class StockEntity
 {
     @Id
     @GeneratedValue
