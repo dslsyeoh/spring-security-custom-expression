@@ -33,9 +33,6 @@ public class UserServiceHandler implements UserService
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Override
     public List<User> list()
     {
@@ -51,13 +48,11 @@ public class UserServiceHandler implements UserService
     @Override
     public User create(User user)
     {
-        List<RoleEntity> roleEntities = user.getRoles().stream().map(roleRepository::findByRole).collect(Collectors.toList());
-        UserEntity entity = new UserEntity();
-        entity.setUsername(user.getUsername());
-        entity.setPassword(passwordEncoder.encode(user.getPassword()));
-        entity.setRoles(roleEntities);
+        UserEntity toBeCreated = new UserEntity();
+        toBeCreated.setUsername(user.getUsername());
+        toBeCreated.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        UserEntity created  = userRepository.save(entity);
+        UserEntity created  = userRepository.save(toBeCreated);
 
         return fromEntity(created);
     }
@@ -78,8 +73,6 @@ public class UserServiceHandler implements UserService
         User user = new User();
         user.setUsername(userEntity.getUsername());
         user.setPassword(userEntity.getPassword());
-        List<String> roles = userEntity.getRoles().stream().map(RoleEntity::getRole).collect(Collectors.toList());
-        user.setRoles(roles);
         return user;
     }
 }

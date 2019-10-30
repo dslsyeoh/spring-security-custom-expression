@@ -5,14 +5,12 @@
 
 package com.dsl.spring.profile.practice.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "roles")
 public class RoleEntity
@@ -30,4 +28,10 @@ public class RoleEntity
 
     @ManyToMany(mappedBy = "roles")
     private List<UserEntity> users;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
+    private List<PermissionEntity> permissions;
 }
