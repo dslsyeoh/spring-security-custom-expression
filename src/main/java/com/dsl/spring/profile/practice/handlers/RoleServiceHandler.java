@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,9 @@ public class RoleServiceHandler implements RoleService
 {
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PermissionRepository permissionRepository;
 
     @Override
     public Role create(Role role)
@@ -40,11 +44,32 @@ public class RoleServiceHandler implements RoleService
         return fromEntity(created);
     }
 
+    @Override
+    public Role update(Role role)
+    {
+        RoleEntity toBeUpdated = roleRepository.findById(role.getId()).orElse(null);
+        if(Objects.nonNull(toBeUpdated))
+        {
+            List<PermissionEntity> permissionEntities = role.getPermissions().stream().map(permissionRepository::findByName).collect(Collectors.toList());
+            toBeUpdated.setPermissions(permissionEntities);
+
+            RoleEntity updated = roleRepository.save(toBeUpdated);
+            return fromEntity(updated);
+        }
+        return null;
+    }
+
     private Role fromEntity(RoleEntity entity)
     {
         Role role = new Role();
+        role.setId(entity.getId());
         role.setUserRole(entity.getRole());
         role.setDescription(entity.getDescription());
+        if(Objects.nonNull(entity.getPermissions()))
+        {
+            List<String> permissions = entity.getPermissions().stream().map(PermissionEntity::getName).collect(Collectors.toList());
+            role.setPermissions(permissions);
+        }
         return role;
     }
 }

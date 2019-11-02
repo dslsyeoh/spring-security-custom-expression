@@ -10,4 +10,6 @@ import com.dsl.spring.profile.practice.dto.Role;
 public interface RoleService
 {
     Role create(Role role);
+
+    Role update(Role role);
 }
