@@ -17,4 +17,6 @@ public interface UserService extends UserDetailsService
     User search(Long id);
 
     User create(User user);
+
+    User update(User user);
 }

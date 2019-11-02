@@ -31,6 +31,9 @@ public class UserServiceHandler implements UserService
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -58,6 +61,25 @@ public class UserServiceHandler implements UserService
     }
 
     @Override
+    public User update(User user)
+    {
+        UserEntity toBeUpdated = userRepository.findById(user.getId()).orElse(null);
+        if(Objects.nonNull(toBeUpdated))
+        {
+            toBeUpdated.setUsername(user.getUsername());
+            if(!passwordEncoder.matches(user.getPassword(), toBeUpdated.getPassword()))
+            {
+                toBeUpdated.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            List<RoleEntity> roleEntities = user.getRoles().stream().map(roleRepository::findByRole).collect(Collectors.toList());
+            toBeUpdated.setRoles(roleEntities);
+            UserEntity updated = userRepository.save(toBeUpdated);
+            return fromEntity(updated);
+        }
+        return null;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username)
     {
         UserEntity entity = userRepository.findByUsername(username);
@@ -71,8 +93,15 @@ public class UserServiceHandler implements UserService
     private User fromEntity(UserEntity userEntity)
     {
         User user = new User();
+        user.setId(userEntity.getId());
         user.setUsername(userEntity.getUsername());
         user.setPassword(userEntity.getPassword());
+        List<RoleEntity> roleEntities = userEntity.getRoles();
+        if(Objects.nonNull(roleEntities))
+        {
+            List<String> roles = roleEntities.stream().map(RoleEntity::getRole).collect(Collectors.toList());
+            user.setRoles(roles);
+        }
         return user;
     }
 }
