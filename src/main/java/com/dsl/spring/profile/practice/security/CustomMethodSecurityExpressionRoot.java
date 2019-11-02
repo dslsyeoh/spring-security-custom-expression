@@ -61,5 +61,4 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         UserEntity userEntity = ((MyUserDetails) this.getPrincipal()).getUserEntity();
         return userEntity.getRoles().stream().map(RoleEntity::getRole).anyMatch(role -> Objects.equals(role, "ADMIN"));
     }
-
 }

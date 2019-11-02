@@ -17,10 +17,11 @@ public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurity
     protected MethodSecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication, MethodInvocation invocation)
     {
         CustomMethodSecurityExpressionRoot root = new CustomMethodSecurityExpressionRoot(authentication);
-        root.setPermissionEvaluator(new CustomPermissionEvaluator());
+        root.setPermissionEvaluator(getPermissionEvaluator());
         root.setTrustResolver(new AuthenticationTrustResolverImpl());
         root.setRoleHierarchy(getRoleHierarchy());
         root.setThis(invocation.getThis());
+        root.setDefaultRolePrefix(getDefaultRolePrefix());
         return root;
     }
 }
