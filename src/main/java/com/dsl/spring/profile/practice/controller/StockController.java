@@ -8,6 +8,7 @@ package com.dsl.spring.profile.practice.controller;
 import com.dsl.spring.profile.practice.dto.Stock;
 import com.dsl.spring.profile.practice.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class StockController
         return stockService.search(id);
     }
 
+    @PreAuthorize("hasPermission(#stock.id, 'EDIT_STOCK', 'ADMIN')")
     @PostMapping
     public String create(@RequestBody Stock stock)
     {
