@@ -1,11 +1,10 @@
 /*
  * Author Steven Yeoh
- * Copyright (c) 2019. All rights reserved
+ * Copyright (c) 2020. All rights reserved
  */
 
 package com.dsl.spring.profile.practice.config;
 
-import com.dsl.spring.profile.practice.dto.Role;
 import com.dsl.spring.profile.practice.security.CustomMethodSecurityExpressionHandler;
 import com.dsl.spring.profile.practice.security.CustomPermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;

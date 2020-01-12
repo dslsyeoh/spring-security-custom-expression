@@ -1,6 +1,6 @@
 /*
  * Author Steven Yeoh
- * Copyright (c) 2019. All rights reserved
+ * Copyright (c) 2020. All rights reserved
  */
 
 package com.dsl.spring.profile.practice.security;
@@ -51,7 +51,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator
 
     private boolean hasPermission(Authentication authentication, String targetType, String permission)
     {
-
         List<String> permissions = new ArrayList<>();
         RoleEntity roleEntity = roleRepository.findByRole(permission);
         if(Objects.nonNull(roleEntity))
